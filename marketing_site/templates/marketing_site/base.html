@@ -16,8 +16,8 @@
   <script src="{% static 'marketing_site/js/jquery.inputmask.min.js' %}"></script>
   <script src="{% static 'marketing_site/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'marketing_site/js/script.js' %}"></script>  
-
-  <title>Рекламное Агентство ЭКСПО - {{ title }}</title>
+  
+  <title>Рекламное Агентство ЭКСПО {% if title %} - {{ title }} {% endif %}</title>
 </head>
 
 <body>
@@ -49,6 +49,9 @@
                 {% if user.is_authenticated %}
                   <li class="nav-item">
                     <a class="nav-link {% if request.path == '/profile/' %} active{% endif %}" href="{% url 'profile' %}">Профиль</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/my_orders/' %} active{% endif %}" href="{% url 'my_orders' %}">Мои заказы</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link {% if request.path == '/logout/' %} active{% endif %}" href="{% url 'logout' %}">Выход</a>

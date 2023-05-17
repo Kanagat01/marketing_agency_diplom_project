@@ -13,4 +13,5 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('services/', services, name='services'),
     path('projects/', projects, name='projects'),
+    path('my_orders/', my_orders, name='my_orders'),
 ]

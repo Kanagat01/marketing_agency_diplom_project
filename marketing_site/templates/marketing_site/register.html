@@ -1,7 +1,7 @@
 {% extends 'marketing_site/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-<main role="main" class="container">
+<div class="container p-3">
     <div class="row">
         <div class="col-md-8">
             {% if messages %}
@@ -15,10 +15,27 @@
                 <form method="POST">
                     {% csrf_token %}
                     <fieldset class="form-group">
-                        <legend class="border-bottom mb-4">Добро пожаловать в клуб Python Bytes</legend>
-                        {{ form | crispy }}
+                        <legend class="border-bottom mb-4">Создание личного кабинета</legend>
+                        <div class="mt-3 mb-3">
+                            {{ form.username | as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mb-3">
+                            {{ form.email | as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mb-3">
+                            {{ form.name | as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mb-3">
+                            {{ form.phone | as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mb-3">
+                            {{ form.password1 | as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mb-3">
+                            {{ form.password2 | as_crispy_field }}
+                        </div>
                     </fieldset>
-                    <div class="form-group">
+                    <div class="form-group mt-3 mb-3">
                         <button class="btn btn-outline-info" type="submit">Регистрация</button>
                     </div>
                 </form>
@@ -30,5 +47,5 @@
             </div>
         </div>
     </div>
-</main>
+</div>
 {% endblock content %}

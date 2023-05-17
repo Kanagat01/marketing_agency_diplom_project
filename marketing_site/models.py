@@ -51,9 +51,11 @@ class Order(models.Model):
     email = models.CharField(max_length=100, verbose_name="Email")
     budget = models.CharField(max_length=100, verbose_name="Бюджет")
     task = models.TextField(verbose_name="Задача")
+    date = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=20, verbose_name="Статус заказа", default="В обработке", choices=[('В обработке', 'В обработке'), ('В работе', 'В работе'), ('Выполнено', 'Выполнено'),])
 
     def __str__(self):
-        return self.name
+        return f'Заказ #{self.pk}'
     
     class Meta:
         verbose_name = "Заказ"
@@ -62,7 +64,9 @@ class Order(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    name = models.CharField(max_length=100, verbose_name="ФИО")
+    phone = models.CharField(max_length=20, verbose_name="Номер телефона")
+    image = models.ImageField(default='profile_pics/default.jpg', upload_to='profile_pics')
 
     def __str__(self):
         return f'{self.user.username} Profile'

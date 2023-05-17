@@ -2,14 +2,25 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
+import re
+from django.core.exceptions import ValidationError
+
+def validate_phone_number(value):
+    pattern = r'^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$'
+
+    if not re.match(pattern, value):
+        raise ValidationError('Введите действительный номер телефона.')
 
 
 class UserRegisterForm(UserCreationForm):
+    name = forms.CharField(max_length=100, label="ФИО")
+    phone = forms.CharField(max_length=20, label="Номер телефона", validators=[validate_phone_number])
     email = forms.EmailField()
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'name',
+                  'phone', 'password1', 'password2']
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -21,9 +32,13 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    name = forms.CharField(max_length=100, label="ФИО")
+    phone = forms.CharField(max_length=20, label="Номер телефона", validators=[validate_phone_number])
+    image = forms.ImageField(label="Изображение")
+
     class Meta:
         model = Profile
-        fields = ['image']
+        fields = ['name', 'phone', 'image']
 
 
 class ContactForm(forms.Form):

@@ -1,15 +1,25 @@
-<div class="row d-flex justify-content-center">
-    <div class="col-md-4 col-sm-10 justify-content-right text-center m-3">
-      <button type="button" class="btn btn-outline-light btn-lg bg3" data-bs-toggle="modal" data-bs-target="#callModal" style="width: 180px; height: 50px;">
-        Перезвонить
-      </button>
+{% if user.is_authenticated %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 col-sm-10 text-center m-3">
+            <a href="{% url 'services' %}" class="btn btn-outline-light btn-lg bg3" style="width: 180px; height: 50px;">
+                Заказать услугу
+            </a>
+        </div>
     </div>
-    <div class="col-md-4 col-sm-10 text-center m-3">
-      <button type="button" class="btn btn-outline-light btn-lg bg3" data-bs-toggle="modal" data-bs-target="#serviceModal" style="width: 180px; height: 50px;">
-        Заказать услугу
-      </button>
+{% else %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 col-sm-10 justify-content-right text-center m-3">
+            <button type="button" class="btn btn-outline-light btn-lg bg3" data-bs-toggle="modal" data-bs-target="#callModal" style="width: 180px; height: 50px;">
+                Перезвонить
+            </button>
+        </div>
+        <div class="col-md-4 col-sm-10 text-center m-3">
+            <button type="button" class="btn btn-outline-light btn-lg bg3" data-bs-toggle="modal" data-bs-target="#serviceModal" style="width: 180px; height: 50px;">
+                Заказать услугу
+            </button>
+        </div>
     </div>
-</div>
+{% endif %}
 
 <!-- Модальное окно Перезвонить -->
 <div class="modal fade" id="callModal" tabindex="-1" aria-labelledby="callModalLabel" aria-hidden="true">
