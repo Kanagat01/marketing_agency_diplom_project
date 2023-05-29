@@ -17,7 +17,7 @@
                 <p class="text-muted mt-auto">{{ project.project_date }}</p>
             </div>
             <div class="col-lg-8 col-md-6 col-sm-12">
-                <img src="{% static project.img %}" class="project-img" alt="{{ project.name }}">
+                <img src="{{ project.img.url }}" class="project-img" alt="{{ project.name }}">
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
     <div class="container-fluid ps-0 pe-0" style="background: #eee;">
         <div class="row align-items-center">
             <div class="col-lg-8 col-md-6 col-sm-12">
-                <img src="{% static project.img %}" class="project-img img-fluid" alt="{{ project.name }}">
+                <img src="{{ project.img.url }}" class="project-img img-fluid" alt="{{ project.name }}">
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 p-5">
                 <h4 class="card-title mb-2">{{ project.name }}</h4>
