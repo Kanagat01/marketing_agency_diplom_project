@@ -5,9 +5,18 @@ from .models import *
 from .forms import *
 
 
+address = Address.objects.first().text
+
+
 def home(request):
+    reviews = Review.objects.all()
     form_contact = ContactForm()
     form_order = OrderForm()
+    try:
+        review = Review.objects.get(user=request.user)
+    except:
+        review = None
+
     if request.method == 'POST':
         if 'contact_form' in request.POST:
             form = ContactForm(request.POST)
@@ -41,13 +50,29 @@ def home(request):
                 messages.error(
                     request, 'Заполните все обязательные поля!')
 
+        elif 'text_review' in request.POST:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                text_review = form.cleaned_data['text_review']
+                if review is None:
+                    Review.objects.create(
+                        user=request.user, text_review=text_review)
+                else:
+                    review.text_review = text_review
+                    review.save()
+
         else:
-            context = {'form_contact': form_contact, 'form_order': form_order}
+            context = {'title': 'Главная', 'reviews': reviews,
+                       'form_contact': form_contact, 'form_order': form_order, 'review': review, 'address': address}
             return render(request, 'marketing_site/home.html', context)
+
     context = {
         'title': 'Главная',
+        'reviews': reviews,
         'form_contact': form_contact,
         'form_order': form_order,
+        'review': review,
+        'address': address
     }
     return render(request, 'marketing_site/home.html', context)
 
@@ -67,7 +92,7 @@ def register(request):
             return redirect('login')
     else:
         form = UserRegisterForm()
-    return render(request, 'marketing_site/register.html', {'title': 'Регистрация', 'form': form})
+    return render(request, 'marketing_site/register.html', {'title': 'Регистрация', 'form': form, 'address': address})
 
 
 @login_required
@@ -91,7 +116,8 @@ def profile(request):
     context = {
         'title': 'Личный кабинет',
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'address': address
     }
 
     return render(request, 'marketing_site/profile.html', context)
@@ -101,20 +127,24 @@ def profile(request):
 def my_orders(request):
     context = {
         'title': 'Ваши заказы',
-        'orders': Order.objects.filter(email=request.user.email)
+        'orders': Order.objects.filter(email=request.user.email),
+        'address': address
     }
     return render(request, "marketing_site/my_orders.html", context)
 
 
 def privacy(request):
-    return render(request, 'marketing_site/privacy.html', {'title': 'Правила обработки персональных данных'})
+    return render(request, 'marketing_site/privacy.html', {'title': 'Правила обработки персональных данных', 'address': address})
 
 
 def about(request):
-    services = Service.objects.all()
+    employees = Employee.objects.all()
+    advantages = Advantage.objects.all()
     context = {
         'title': 'О нас',
-        'services': services
+        'employees': employees,
+        'advantages': advantages,
+        'address': address
     }
     return render(request, 'marketing_site/about.html', context)
 
@@ -125,8 +155,10 @@ def services(request):
     context = {
         'title': 'Услуги',
         'services': services,
-        'form_order': form_order
+        'form_order': form_order,
+        'address': address
     }
+
     if request.method == 'POST':
         form = OrderForm(request.POST)
         budget = form.data['budget']
@@ -148,6 +180,7 @@ def projects(request):
     projects = Project.objects.all()
     context = {
         'title': 'Наши работы',
-        'projects': projects
+        'projects': projects,
+        'address': address
     }
     return render(request, 'marketing_site/projects.html', context)

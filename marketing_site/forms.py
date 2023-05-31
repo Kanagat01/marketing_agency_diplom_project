@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from .models import *
 import re
 from django.core.exceptions import ValidationError
 
@@ -118,3 +118,11 @@ class OrderForm(forms.Form):
                 'required': True,
             }
         ))
+
+
+class ReviewForm(forms.Form):
+    text_review = forms.CharField(max_length=300, label="Текст отзыва")
+
+    class Meta:
+        model = Review
+        fields = ['user', 'text_review']

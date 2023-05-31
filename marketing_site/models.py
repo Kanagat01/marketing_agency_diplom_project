@@ -74,12 +74,12 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
+        img = Image.open(self.img.path)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(self.image.path)
+            img.save(self.img.path)
 
     class Meta:
         verbose_name = "Профиль"
@@ -87,9 +87,9 @@ class Profile(models.Model):
 
 
 class Employee(models.Model):
-    fullname = models.CharField(max_length=150, verbose_name="ФИО")
-    position = models.CharField(max_length=150, verbose_name="Должность")
-    description = models.TextField(max_length=100, verbose_name="Описание")
+    fullname = models.CharField(max_length=100, verbose_name="ФИО")
+    position = models.CharField(max_length=100, verbose_name="Должность")
+    description = models.TextField(max_length=300, verbose_name="Описание")
     img = models.ImageField(upload_to='marketing_site/images/', verbose_name="Изображение")
 
     def __str__(self):
@@ -98,12 +98,12 @@ class Employee(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
+        img = Image.open(self.img.path)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(self.image.path)
+            img.save(self.img.path)
 
     class Meta:
         verbose_name = "Сотрудник"
@@ -112,7 +112,7 @@ class Employee(models.Model):
 
 class Review(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    text_review = models.TextField(max_length=100, verbose_name="")
+    text_review = models.TextField(max_length=300, verbose_name="Текст отзыва")
 
     def __str__(self):
         return f'Отзыв от {self.user.username}'
@@ -120,6 +120,32 @@ class Review(models.Model):
     class Meta:
         verbose_name = "Отзыв"
         verbose_name_plural = "Отзывы"
+
+
+class Advantage(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название преимущества")
+    description = models.TextField(max_length=300, verbose_name="Небольшое описание")
+    img = models.ImageField(upload_to='marketing_site/images/', verbose_name="Изображение")
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        img = Image.open(self.img.path)
+
+        output_size = (1200, 900)
+        img.thumbnail(output_size)
+        img.save(self.img.path)
+
+    class Meta:
+        verbose_name = "Преимущество"
+        verbose_name_plural = "Преимущества"
+
+
+class Address(models.Model):
+    text = models.CharField(max_length=255, verbose_name="Адрес")
 
 
 class Assignment(models.Model):
@@ -146,57 +172,3 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question
-
-
-class Advantage(models.Model):
-    title = models.CharField(max_length=50, verbose_name="Название преимущества")
-    description = models.TextField(max_length=100, verbose_name="Небольшое описание")
-    img = models.ImageField(upload_to='marketing_site/images/', verbose_name="Изображение")
-
-    def __str__(self):
-        return self.title
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
-
-    class Meta:
-        verbose_name = "Преимущество"
-        verbose_name_plural = "Преимущества"
-
-
-# class Test(models.Model):
-#     title = models.CharField(max_length=100)
-#     description = models.TextField(max_length=50)
-#     img = models.ImageField(upload_to='test_images/', verbose_name="Изображение")
-
-#     def __str__(self):
-#         return f'Тест {self.title}'
-
-#     def save(self, *args, **kwargs):
-#         super().save(*args, **kwargs)
-
-#         img = Image.open(self.image.path)
-
-#         if img.height > 300 or img.width > 300:
-#             output_size = (300, 300)
-#             img.thumbnail(output_size)
-#             img.save(self.image.path)
-
-#     class Meta:
-#         verbose_name = "Тест"
-#         verbose_name_plural = "Тесты"
-
-
-# class Question(models.Model):
-#     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-#     question_text = models.CharField(max_length=50, verbose_name="Вопрос")
-#     answers = models.CharField(max_length=20, verbose_name="Статус заказа", default="В обработке", 
-#                                choices=[('В обработке', 'В обработке'), ('В работе', 'В работе'), ('Выполнено', 'Выполнено'), ()])
-#     right_answer = models.CharField()

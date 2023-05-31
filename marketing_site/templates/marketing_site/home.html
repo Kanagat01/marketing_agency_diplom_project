@@ -148,15 +148,59 @@
         <h2 class="text-center text-uppercase color2 mb-5">Отзывы</h2>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-4 col-sm-12">
-        <img src="{% static 'marketing_site/images/review1.jpg' %}" class="rounded mx-auto d-block" alt="review1" style="max-width: 130px; max-height: 130px;">
-        <h4 class="text-center mb-3 mt-3">Директор по маркетингу <br> Fashion Group Шорохова Е.С</h4>
-        <blockquote class="blockquote new-height">
-          <p class="text-center">После начала работы с Экспо количество лидов выросло на 48% в первый же месяц! 
-            Спасибо большое за качественную работу и отличные результаты.</p>
-        </blockquote>
-        <div class="line bg2"></div>
+    <div id="carouselExample" class="carousel slide">
+      <div class="carousel-inner">
+        {% for review in reviews %}
+        <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+          <img src="{{ review.user.profile.img.url }}" class="itd_circle mx-auto d-block" alt="review1" style="max-width: 130px; max-height: 130px;">
+          <h4 class="text-center mb-3 mt-3">{{ review.user.profile.name }}</h4>
+          <blockquote class="blockquote new-height">
+            <p class="text-center">{{ review.text_review }}</p>
+          </blockquote>
+          <div class="line bg2"></div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="bg-primary carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Предыдущий</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="bg-primary carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Следующий</span>
+      </button>
+    </div>
+    <div class="container">
+    {% if user.is_authenticated %}
+      {% if review %}
+          <p>Вы уже оставили отзыв:</p>
+          <form method="post">
+              {% csrf_token %}
+              <textarea class="form-control mb-3" type="text" name="text_review">{{ review.text_review }}</textarea>
+              <button type="submit" class="btn btn-outline-light btn-lg bg3" style="width: 100%; height: 60px;">Изменить отзыв</button>
+          </form>
+      {% else %}
+          <p>Оставьте свой отзыв:</p>
+          <form method="post">
+              {% csrf_token %}
+              <textarea class="form-control mb-3" type="text" name="text_review" placeholder="Ваш отзыв"></textarea>
+              <button type="submit" class="btn btn-outline-light btn-lg bg3" style="width: 100%; height: 60px;">Оставить отзыв</button>
+          </form>
+      {% endif %}
+    {% else %}
+        <p>Чтобы оставить отзыв, пожалуйста, войдите в свою учетную запись.</p>
+    {% endif %}
+    </div>
+    <!-- <div class="row justify-content-center">
+      <div class="carousel-item active">
+          <img src="{% static 'marketing_site/images/review1.jpg' %}" class="rounded mx-auto d-block" alt="review1" style="max-width: 130px; max-height: 130px;">
+          <h4 class="text-center mb-3 mt-3">Директор по маркетингу <br> Fashion Group Шорохова Е.С</h4>
+          <blockquote class="blockquote new-height">
+            <p class="text-center">После начала работы с Экспо количество лидов выросло на 48% в первый же месяц! 
+              Спасибо большое за качественную работу и отличные результаты.</p>
+          </blockquote>
+          <div class="line bg2"></div>
+        </div>
       </div>
       <div class="col-lg-4 col-sm-12">
         <img src="{% static 'marketing_site/images/review2.jpg' %}" class="rounded mx-auto d-block" alt="review2" style="max-width: 120px; max-height: 120px;">
@@ -174,7 +218,7 @@
         </blockquote>
         <div class="line bg2"></div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
 <!-- Форма -->
